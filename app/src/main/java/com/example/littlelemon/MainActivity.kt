@@ -1,58 +1,105 @@
 package com.example.littlelemon
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.example.littlelemon.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.room.Room
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.android.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 
-class MainActivity : AppCompatActivity() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+class MainActivity : ComponentActivity() {
+        private val httpClient = HttpClient(Android){
+            install(ContentNegotiation){
+                json(contentType = ContentType("text", "plain"))
+            }
+        }
+    private val database by lazy{
+        Room.databaseBuilder(applicationContext, AppDatabase::class.java, "database").build()
+    }
+    override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+        setContent{
+            LittleLemonTheme {
+                val databaseMenuItems by database.menuItemDao().getAll()
+                    .observeAsState(emptyList())
+                // add is not empty check here
+                if (databaseMenuItems.isEmpty()) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(16.dp),
+                        text = "The menu is empty"
+                    )
+                } else {
+                    MenuItemsList(menuItems)
+                }
+            
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+            }
+        }
+    }
+    private suspend fun fetchMenu(): List<MenuItemNetwork> {
 
-        setSupportActionBar(binding.toolbar)
+//        TODO("Retrieve data")
+        // data URL: https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/littleLemonSimpleMenu.json
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        Log.d("Log Message", "Hello Here!!!")
 
-        binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        val response: MenuNetwork =
+            httpClient.get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/littleLemonSimpleMenu.json")
+                .body()
+
+        return response.menu
+
+    }
+
+    @Composable
+    private fun MenuItemsList(items: List<MenuItemRoom>) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(top = 20.dp)
+        ) {
+            items(
+                items = items,
+                itemContent = { menuItem ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+
+                }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+        Column() {
+            
+        }
+                    }
+            )
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration)
-                || super.onSupportNavigateUp()
-    }
 }
