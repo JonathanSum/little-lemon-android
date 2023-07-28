@@ -44,11 +44,10 @@ class MainActivity : ComponentActivity() {
         getSharedPreferences("LittleLemon", MODE_PRIVATE)
     }
 
-    private val showLunchMenuLiveData = MutableLiveData<Boolean>()
     private val firstNameLiveData = MutableLiveData<String>()
     private val lastNameLiveData = MutableLiveData<String>()
     private val emailLiveData = MutableLiveData<String>()
-    private val sharedPreferencesListener = OnSharedPreferenceChangeListener {sharedPreferences, key ->{
+    private val sharedPreferencesListener = OnSharedPreferenceChangeListener {sharedPreferences, key ->
         if(key=="firstName"){
             firstNameLiveData.value = sharedPreferences.getString(key, "")
         }
@@ -58,14 +57,8 @@ class MainActivity : ComponentActivity() {
         if(key=="email"){
             emailLiveData.value = sharedPreferences.getString(key, "")
         }
-    }}
-    public fun onSubmit(firstName:String, lastName:String, email:String){
-
-        sharedPreferences.edit(commit = true) { putString(firstName,"")}
-        sharedPreferences.edit(commit = true) { putString(lastName,"")}
-        sharedPreferences.edit(commit = true) { putString(email,"")}
-
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firstNameLiveData.value = sharedPreferences.getString("firstName", "")
@@ -76,8 +69,14 @@ class MainActivity : ComponentActivity() {
         setContent {
             LittleLemonTheme {
 
+                fun onSubmit(firstName:String, lastName:String, email:String){
 
-//                MyNavigation()
+                    sharedPreferences.edit(commit = true) { putString(firstName,"")}
+                    sharedPreferences.edit(commit = true) { putString(lastName,"")}
+                    sharedPreferences.edit(commit = true) { putString(email,"")}
+
+                }
+                MyNavigation(::onSubmit)
                 /*
                 val databaseMenuItems by database.menuItemDao().getAll()
                     .observeAsState(emptyList())

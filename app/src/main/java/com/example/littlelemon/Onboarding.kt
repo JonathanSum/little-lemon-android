@@ -14,8 +14,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,7 +32,7 @@ import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 
 @Composable
-fun LoginScreen(onSubmit:(f:String, l:String, e:String)->Unit){
+fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:String)->Unit){
 
 //    val SharedPreferences  sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 //    val value = sharedPreferences.getString("key", "default value")
@@ -39,6 +41,16 @@ fun LoginScreen(onSubmit:(f:String, l:String, e:String)->Unit){
 //    sharedPreferences.edit(commit = true) {
 //         putString("key",”value”)
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
+    var firstName by remember{
+        mutableStateOf(TextFieldValue(""))
+    }
+    var lastName by remember{
+        mutableStateOf(TextFieldValue(""))
+    }
+    var email by remember{
+        mutableStateOf(TextFieldValue(""))
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.verticalScroll(scrollState)
@@ -82,11 +94,12 @@ fun LoginScreen(onSubmit:(f:String, l:String, e:String)->Unit){
 
             textAlign = TextAlign.Left,)
         OutlinedTextField(
-            value = "",modifier = Modifier
+            value = firstName,
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {},
-            label = {Text(text = "Mary")} ,
+            onValueChange = {firstName = it},
+            label = {Text(text = "First Name")} ,
             shape = RoundedCornerShape(20)
         )
         Text(
@@ -95,12 +108,14 @@ fun LoginScreen(onSubmit:(f:String, l:String, e:String)->Unit){
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             textAlign = TextAlign.Left,)
         OutlinedTextField(
-            value = "",
+            value = lastName,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {},
-            label = {Text(text = "Lee")},
+            onValueChange = {
+                value -> lastName = value
+                            },
+            label = {Text(text = "Last Name")},
             shape = RoundedCornerShape(20)
         )
         Text(text="Email",
@@ -109,16 +124,20 @@ fun LoginScreen(onSubmit:(f:String, l:String, e:String)->Unit){
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             textAlign = TextAlign.Left,)
         OutlinedTextField(
-            value = "",
+            value = email,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {},
-            label = {Text(text = "A123@gmail.com")},
+            onValueChange = {
+                            email = it
+            },
+            label = {Text(text = "Email")},
             shape = RoundedCornerShape(20)
         )
         Button(
-            onClick = {onSubmit("f1","l1","e1")},
+            onClick = {
+                onSubmit("f1","l1","e1")
+                      },
             colors =  ButtonDefaults.buttonColors(LittleLemonColor.yellow),
             modifier = Modifier
                 .fillMaxWidth()
@@ -155,16 +174,13 @@ fun HelloContent() {
 
 @Composable
 fun Onboarding(navController: NavController, onSubmit:(f:String, l:String, e:String)->Unit){
-    //fun LoginScreen(onSubmit:(f:String, l:String, e:String)->Unit){
-    fun onSubmit2 (f:String, l:String, e:String):Unit{
 
-    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
         LittleLemonTheme {
-            LoginScreen(onSubmit)
+            LoginScreen(navController, onSubmit)
         }
     }
 }
