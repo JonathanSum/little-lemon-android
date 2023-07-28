@@ -59,25 +59,25 @@ class MainActivity : ComponentActivity() {
             emailLiveData.value = sharedPreferences.getString(key, "")
         }
     }}
+    public fun onSubmit(firstName:String, lastName:String, email:String){
 
+        sharedPreferences.edit(commit = true) { putString(firstName,"")}
+        sharedPreferences.edit(commit = true) { putString(lastName,"")}
+        sharedPreferences.edit(commit = true) { putString(email,"")}
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firstNameLiveData.value = sharedPreferences.getString("firstName", "")
         lastNameLiveData.value = sharedPreferences.getString("lastName", "")
         emailLiveData.value = sharedPreferences.getString("email", "")
         sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
-        fun onSubmit(firstName:String, lastName:String, email:String){
 
-        sharedPreferences.edit(commit = true) { putString(firstName,"")}
-        sharedPreferences.edit(commit = true) { putString(lastName,"")}
-        sharedPreferences.edit(commit = true) { putString(email,"")}
-
-        }
         setContent {
             LittleLemonTheme {
 
 
-                MyNavigation()
+//                MyNavigation()
                 /*
                 val databaseMenuItems by database.menuItemDao().getAll()
                     .observeAsState(emptyList())

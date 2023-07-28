@@ -154,14 +154,17 @@ fun HelloContent() {
 
 
 @Composable
-fun Onboarding(navController: NavController){
+fun Onboarding(navController: NavController, onSubmit:(f:String, l:String, e:String)->Unit){
+    //fun LoginScreen(onSubmit:(f:String, l:String, e:String)->Unit){
+    fun onSubmit2 (f:String, l:String, e:String):Unit{
 
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colors.background
     ) {
         LittleLemonTheme {
-            LoginScreen( ::onSubmit1)
+            LoginScreen(onSubmit)
         }
     }
 }
