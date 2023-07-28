@@ -1,6 +1,6 @@
 package com.example.littlelemon
 
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import  android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -48,27 +48,42 @@ class MainActivity : ComponentActivity() {
     private val lastNameLiveData = MutableLiveData<String>()
     private val emailLiveData = MutableLiveData<String>()
     private val sharedPreferencesListener = OnSharedPreferenceChangeListener {sharedPreferences, key ->
-        if(key=="firstName"){
-            firstNameLiveData.value = sharedPreferences.getString(key, "")
-        }
-        if(key=="lastName"){
-            lastNameLiveData.value = sharedPreferences.getString(key, "")
-        }
-        if(key=="email"){
-            emailLiveData.value = sharedPreferences.getString(key, "")
+        when (key) {
+            "firstName" -> {
+                firstNameLiveData.value = sharedPreferences.getString(key, "")
+            }
+            "lastName" -> {
+                lastNameLiveData.value = sharedPreferences.getString(key, "")
+            }
+            "email" -> {
+                emailLiveData.value = sharedPreferences.getString(key, "")
+            }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        firstNameLiveData.value = sharedPreferences.getString("firstName", "")
-        lastNameLiveData.value = sharedPreferences.getString("lastName", "")
-        emailLiveData.value = sharedPreferences.getString("email", "")
-        sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
 
         setContent {
             LittleLemonTheme {
+                //TODO("I think I do not need the Live Data here")
+                firstNameLiveData.value = sharedPreferences.getString("firstName", "")
+                lastNameLiveData.value = sharedPreferences.getString("lastName", "")
+                emailLiveData.value = sharedPreferences.getString("email", "")
 
+                val firstName: String? = sharedPreferences.getString("firstName", "")
+                val lastName: String? = sharedPreferences.getString("firstName", "")
+                val email: String? = sharedPreferences.getString("firstName", "")
+                lastNameLiveData.value = sharedPreferences.getString("lastName", "")
+                emailLiveData.value = sharedPreferences.getString("email", "")
+
+                sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
+
+                var  logged:Boolean = false;
+
+                if(firstName!!.isNotBlank() && lastName!!.isNotBlank() && email!!.isNotBlank()){
+                    logged = true;
+                }
                 fun onSubmit(firstName:String, lastName:String, email:String){
 
                     sharedPreferences.edit(commit = true) { putString(firstName,"")}
@@ -76,7 +91,8 @@ class MainActivity : ComponentActivity() {
                     sharedPreferences.edit(commit = true) { putString(email,"")}
 
                 }
-                MyNavigation(::onSubmit)
+
+                MyNavigation(logged, ::onSubmit)
                 /*
                 val databaseMenuItems by database.menuItemDao().getAll()
                     .observeAsState(emptyList())

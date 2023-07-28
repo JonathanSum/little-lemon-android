@@ -12,13 +12,13 @@ class NavigationComposable {
 //@Preview(showBackground=true)
 @Composable
 //fun MyNavigation(){    //For testing
-fun MyNavigation(onSubmit:(f:String, l:String, e:String)->Unit){
+fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit){
     val navController = rememberNavController()
     //Check the user is logged in or not
 
 
 
-    var  logged:Boolean = false;
+
     NavHost(navController = navController,
         startDestination =if (logged) Home.route else OnboardingRoute.route
 

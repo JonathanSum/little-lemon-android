@@ -99,7 +99,7 @@ fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:St
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             onValueChange = {firstName = it},
-            label = {Text(text = "First Name")} ,
+//            label = {Text(text = "First Name")} ,
             shape = RoundedCornerShape(20)
         )
         Text(
@@ -115,7 +115,7 @@ fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:St
             onValueChange = {
                 value -> lastName = value
                             },
-            label = {Text(text = "Last Name")},
+//            label = {Text(text = "Last Name")},
             shape = RoundedCornerShape(20)
         )
         Text(text="Email",
@@ -131,12 +131,17 @@ fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:St
             onValueChange = {
                             email = it
             },
-            label = {Text(text = "Email")},
+//            label = {Text(text = "Email")},
             shape = RoundedCornerShape(20)
         )
         Button(
             onClick = {
-                onSubmit("f1","l1","e1")
+                if(firstName.text.isNotBlank() && lastName.text.isNotBlank() && email.text.isNotBlank()){
+                    onSubmit(firstName.text, lastName.text, email.text)
+                    navController.navigate(Profile.route)
+                }else{
+
+                }
                       },
             colors =  ButtonDefaults.buttonColors(LittleLemonColor.yellow),
             modifier = Modifier
