@@ -1,6 +1,7 @@
 package com.example.littlelemon
 
 import android.view.Surface
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.Image
@@ -138,9 +139,10 @@ fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:St
             onClick = {
                 if(firstName.text.isNotBlank() && lastName.text.isNotBlank() && email.text.isNotBlank()){
                     onSubmit(firstName.text, lastName.text, email.text)
-                    navController.navigate(Profile.route)
+                    navController.navigate(Home.route)
+                    Toast.makeText(context,"Registration successful!", Toast.LENGTH_LONG).show()
                 }else{
-
+                    Toast.makeText(context,"Registration unsuccessful. Please enter all data.", Toast.LENGTH_LONG).show()
                 }
                       },
             colors =  ButtonDefaults.buttonColors(LittleLemonColor.yellow),

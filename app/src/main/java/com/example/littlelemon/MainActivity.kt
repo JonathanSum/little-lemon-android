@@ -2,6 +2,7 @@ package com.example.littlelemon
 
 import  android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -47,6 +48,8 @@ class MainActivity : ComponentActivity() {
     private val firstNameLiveData = MutableLiveData<String>()
     private val lastNameLiveData = MutableLiveData<String>()
     private val emailLiveData = MutableLiveData<String>()
+
+
     private val sharedPreferencesListener = OnSharedPreferenceChangeListener {sharedPreferences, key ->
         when (key) {
             "firstName" -> {
@@ -71,28 +74,47 @@ class MainActivity : ComponentActivity() {
                 lastNameLiveData.value = sharedPreferences.getString("lastName", "")
                 emailLiveData.value = sharedPreferences.getString("email", "")
 
-                val firstName: String? = sharedPreferences.getString("firstName", "")
-                val lastName: String? = sharedPreferences.getString("firstName", "")
-                val email: String? = sharedPreferences.getString("firstName", "")
-                lastNameLiveData.value = sharedPreferences.getString("lastName", "")
-                emailLiveData.value = sharedPreferences.getString("email", "")
 
                 sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
 
-                var  logged:Boolean = false;
-
-                if(firstName!!.isNotBlank() && lastName!!.isNotBlank() && email!!.isNotBlank()){
+                var  logged = false;
+                Log.d("Log Message", "Hello Here started!!!")
+                Log.d("Log Message", sharedPreferences.getString("firstName", "").toString())
+                Log.d("Log Message", sharedPreferences.getString("lastName", "").toString())
+                Log.d("Log Message", sharedPreferences.getString("email", "").toString())
+                val user  = User(firstNameLiveData.value!!,
+                lastNameLiveData.value!!,emailLiveData.value!!)
+                if(firstNameLiveData.value!!.isNotBlank()
+                    && lastNameLiveData.value !!.isNotBlank()
+                    && emailLiveData.value !!.isNotBlank()){
                     logged = true;
                 }
+
+                Log.d("Log Message", "Hello Here ended!!!")
                 fun onSubmit(firstName:String, lastName:String, email:String){
+                    Log.d("Log Message", "onSubmit started!!!")
+                    sharedPreferences.edit(commit = true) { putString("firstName",firstName)}
+                    sharedPreferences.edit(commit = true) { putString("lastName",lastName)}
+                    sharedPreferences.edit(commit = true) { putString("email",email)}
 
-                    sharedPreferences.edit(commit = true) { putString(firstName,"")}
-                    sharedPreferences.edit(commit = true) { putString(lastName,"")}
-                    sharedPreferences.edit(commit = true) { putString(email,"")}
+                    Log.d("Log Message", "onSubmit ended!!!")
+                    Log.d("Log Message", firstName)
+                    Log.d("Log Message", lastName)
+                    Log.d("Log Message", email)
+                    Log.d("Log Message", "Now the user information in sharedPreferences:")
 
+
+                    Log.d("Log Message", sharedPreferences.getString("firstName", "").toString())
+                    Log.d("Log Message", sharedPreferences.getString("lastName", "").toString())
+                    Log.d("Log Message", sharedPreferences.getString("email", "").toString())
+
+                    Log.d("Log Message", "Now the user information in LiveData:")
+                    Log.d("Log Message", firstNameLiveData.value!!)
+                    Log.d("Log Message", lastNameLiveData.value!!)
+                    Log.d("Log Message", emailLiveData.value!!)
                 }
 
-                MyNavigation(logged, ::onSubmit)
+                MyNavigation(logged, ::onSubmit,user)
                 /*
                 val databaseMenuItems by database.menuItemDao().getAll()
                     .observeAsState(emptyList())

@@ -12,7 +12,7 @@ class NavigationComposable {
 //@Preview(showBackground=true)
 @Composable
 //fun MyNavigation(){    //For testing
-fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit){
+fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit, user:User){
     val navController = rememberNavController()
     //Check the user is logged in or not
 
@@ -30,7 +30,7 @@ fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit){
             Onboarding(navController, onSubmit)
         }
         composable(Profile.route){
-            ProfileScreen(navController)
+            ProfileScreen(navController, user)
         }
     }
 
