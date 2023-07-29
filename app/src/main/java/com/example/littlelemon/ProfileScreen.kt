@@ -4,7 +4,9 @@ import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
@@ -26,9 +28,11 @@ import androidx.navigation.NavController
 import com.example.littlelemon.ui.theme.LittleLemonColor
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.edit
 
 @Composable
-fun ProfileScreen(navController: NavController, user:User){
+fun ProfileScreen(navController: NavController,onLogout:()->Unit, sharedPreferences: android.content.SharedPreferences){
 
 //    val firstNameLiveData = MutableLiveData<String>(user.firstName)
 ////    val lastNameLiveData = MutableLiveData<String>(user.lastName)
@@ -37,9 +41,17 @@ fun ProfileScreen(navController: NavController, user:User){
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally){
-        var firstName by remember { mutableStateOf("") }
-        var lastName by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
+//        var firstName by remember { mutableStateOf(user.firstName) }
+//        var lastName by remember { mutableStateOf(user.lastName) }
+//        var email by remember { mutableStateOf(user.email) }
+
+        val firstNameLiveData = MutableLiveData<String>()
+        val lastNameLiveData = MutableLiveData<String>()
+        val emailLiveData = MutableLiveData<String>()
+
+        firstNameLiveData.value = sharedPreferences.getString("firstName", "")
+        lastNameLiveData.value = sharedPreferences.getString("lastName", "")
+        emailLiveData.value = sharedPreferences.getString("email", "")
 
         Text(text="ProfileScreen Screen", fontSize=48.sp)
         Button(onClick = {
@@ -48,15 +60,30 @@ fun ProfileScreen(navController: NavController, user:User){
             Text(text="Home")
         }
 
-        ProfileBlock(firstName,
-            lastName,
-            email,
-            firstName->firstName)
+        ProfileBlock(navController, firstNameLiveData.value.toString(),
+            lastNameLiveData.value.toString(),
+            emailLiveData.value.toString(),{
+                firstNameLiveData.value = it
+            },{
+                lastNameLiveData.value = it
+            },{
+                emailLiveData.value = it
+            },onLogout
+            )
     }
 }
 @Composable
-fun ProfileBlock(firstName1:String, lastName:String, email:String){
+fun ProfileBlock(navController:NavController, firstName:String,
+                 lastName:String,
+                 email:String,
+                 onChangefName:(String)->Unit,
+                 onChangelName:(String)->Unit,
+                 onChangeEmail:(String)->Unit,onLogout:()->Unit){
+    val scrollState = rememberScrollState()
+    val context = LocalContext.current
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.verticalScroll(scrollState)
     ){
         Image(
             painter = painterResource(
@@ -70,18 +97,6 @@ fun ProfileBlock(firstName1:String, lastName:String, email:String){
                     scaleY = maxOf(.5f, minOf(3f, 5f)),
                 ),
         )
-        Row(verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = LittleLemonColor.darkGreen)
-                .requiredHeight(120.dp)) {
-            Text(text="Let's get to know you",
-                color= LittleLemonColor.white,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 30.dp, end = 30.dp),
-                textAlign = TextAlign.Justify,)
-        }
 
         Text(text="Personal information",
             fontWeight = FontWeight.Bold,
@@ -96,11 +111,11 @@ fun ProfileBlock(firstName1:String, lastName:String, email:String){
 
             textAlign = TextAlign.Left,)
         OutlinedTextField(
-            value = firstName1,
+            value = firstName,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {firstName1 = it},
+            onValueChange = onChangefName,
 //            label = {Text(text = "First Name")} ,
             shape = RoundedCornerShape(20)
         )
@@ -114,9 +129,9 @@ fun ProfileBlock(firstName1:String, lastName:String, email:String){
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {
-                    value -> lastName = value
-            },
+            onValueChange =
+                    onChangelName
+            ,
 //            label = {Text(text = "Last Name")},
             shape = RoundedCornerShape(20)
         )
@@ -130,24 +145,27 @@ fun ProfileBlock(firstName1:String, lastName:String, email:String){
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {
-                email = it
-            },
+            onValueChange =
+                onChangeEmail
+            ,
 //            label = {Text(text = "Email")},
             shape = RoundedCornerShape(20)
         )
         Button(
             onClick = {
-
-            },
+                onLogout()
+                Toast.makeText(context,"Logout successful!", Toast.LENGTH_LONG).show()
+                navController.navigate(OnboardingRoute.route)
+                      }
+            ,
             colors =  ButtonDefaults.buttonColors(LittleLemonColor.yellow),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 30.dp, end = 30.dp, top = 50.dp, bottom = 100.dp),
+                .padding(start = 30.dp, end = 30.dp, top = 100.dp, bottom = 100.dp),
             shape = RoundedCornerShape(20),
         ){
             Text(
-                text = "Register ",
+                text = "Log out ",
             )
         }
     }

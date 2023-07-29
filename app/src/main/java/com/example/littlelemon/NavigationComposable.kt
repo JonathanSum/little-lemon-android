@@ -12,7 +12,9 @@ class NavigationComposable {
 //@Preview(showBackground=true)
 @Composable
 //fun MyNavigation(){    //For testing
-fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit, user:User){
+fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit,
+                 onLogout:()->Unit, sharedPreferences: android.content.SharedPreferences,
+                 databaseMenuItems: List<MenuItemRoom>){
     val navController = rememberNavController()
     //Check the user is logged in or not
 
@@ -20,17 +22,17 @@ fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit, 
 
 
     NavHost(navController = navController,
-        startDestination =if (logged) Home.route else OnboardingRoute.route
+        startDestination =if (!logged) Home.route else OnboardingRoute.route
 
     ){
         composable(Home.route){
-            HomeScreen(navController)
+            HomeScreen(navController, databaseMenuItems)
         }
         composable(OnboardingRoute.route){
             Onboarding(navController, onSubmit)
         }
         composable(Profile.route){
-            ProfileScreen(navController, user)
+            ProfileScreen(navController,onLogout, sharedPreferences)
         }
     }
 

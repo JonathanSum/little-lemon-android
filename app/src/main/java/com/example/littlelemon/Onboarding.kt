@@ -139,8 +139,8 @@ fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:St
             onClick = {
                 if(firstName.text.isNotBlank() && lastName.text.isNotBlank() && email.text.isNotBlank()){
                     onSubmit(firstName.text, lastName.text, email.text)
-                    navController.navigate(Home.route)
                     Toast.makeText(context,"Registration successful!", Toast.LENGTH_LONG).show()
+                    navController.navigate(Home.route)
                 }else{
                     Toast.makeText(context,"Registration unsuccessful. Please enter all data.", Toast.LENGTH_LONG).show()
                 }

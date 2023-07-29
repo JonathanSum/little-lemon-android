@@ -78,10 +78,10 @@ class MainActivity : ComponentActivity() {
                 sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
 
                 var  logged = false;
-                Log.d("Log Message", "Hello Here started!!!")
-                Log.d("Log Message", sharedPreferences.getString("firstName", "").toString())
-                Log.d("Log Message", sharedPreferences.getString("lastName", "").toString())
-                Log.d("Log Message", sharedPreferences.getString("email", "").toString())
+//                Log.d("Log Message", "Hello Here started!!!")
+//                Log.d("Log Message", sharedPreferences.getString("firstName", "").toString())
+//                Log.d("Log Message", sharedPreferences.getString("lastName", "").toString())
+//                Log.d("Log Message", sharedPreferences.getString("email", "").toString())
                 val user  = User(firstNameLiveData.value!!,
                 lastNameLiveData.value!!,emailLiveData.value!!)
                 if(firstNameLiveData.value!!.isNotBlank()
@@ -113,25 +113,30 @@ class MainActivity : ComponentActivity() {
                     Log.d("Log Message", lastNameLiveData.value!!)
                     Log.d("Log Message", emailLiveData.value!!)
                 }
+                fun onLogOut(){
+                    sharedPreferences.edit(commit = true) { putString("firstName","")}
+                    sharedPreferences.edit(commit = true) { putString("lastName","")}
+                    sharedPreferences.edit(commit = true) { putString("email","")}
+                    logged = false;
+                }
 
-                MyNavigation(logged, ::onSubmit,user)
-                /*
+
                 val databaseMenuItems by database.menuItemDao().getAll()
                     .observeAsState(emptyList())
                 // add is not empty check here
-                if (databaseMenuItems.isEmpty()) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .padding(16.dp),
-                        text = "The menu is empty"
-                    )
-                } else {
-                    MenuItemsList(databaseMenuItems)
-                }
+//                if (databaseMenuItems.isEmpty()) {
+//                    Text(
+//                        modifier = Modifier
+//                            .fillMaxHeight()
+//                            .padding(16.dp),
+//                        text = "The menu is empty"
+//                    )
+//                } else {
+//                    MenuItemsList(databaseMenuItems)
+//                }
 
-                */
 
+                MyNavigation(logged, ::onSubmit,::onLogOut, sharedPreferences, databaseMenuItems)
             }
         }
         lifecycleScope.launch(Dispatchers.IO) {
@@ -146,13 +151,10 @@ class MainActivity : ComponentActivity() {
     private suspend fun fetchMenu(): List<MenuItemNetwork> {
 
 //        TODO("Retrieve data")
-        // data URL: https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/littleLemonSimpleMenu.json
-
 
         val response: MenuNetwork =
             httpClient.get("https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/menu.json")
                 .body()
-
         return response.menu
 
     }
