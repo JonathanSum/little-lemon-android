@@ -11,15 +11,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+//import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+//import com.bumptech.glide.integration.compose.GlideImage
 import com.example.littlelemon.ui.theme.LittleLemonColor
 
 
@@ -49,7 +49,7 @@ fun WeeklySpecialCard(){
     ){
         Text(
             text = stringResource(R.string.order_for_delivery),
-            style = MaterialTheme.typography.h2,
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier
                 .padding(8.dp)
         )
@@ -60,7 +60,7 @@ fun WeeklySpecialCard(){
 fun MenuCategory(category: String){
     Button(
         onClick = {},
-    colors = ButtonDefaults.buttonColors(backgroundColor = LittleLemonColor.LightlyGrey),
+    colors = ButtonDefaults.buttonColors(contentColor = LittleLemonColor.LightlyGrey),
     shape = RoundedCornerShape(40),
         modifier = Modifier.padding(5.dp)
     ){
@@ -73,7 +73,9 @@ val Categories = listOf<String>(
 
 //select bar
 
-@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
+
+//@OptIn(ExperimentalMaterial3Api::class, ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuDish(navController: NavHostController? = null, food: MenuItemRoom){
     Card(onClick = {
@@ -82,17 +84,17 @@ fun MenuDish(navController: NavHostController? = null, food: MenuItemRoom){
     }){
     Row( modifier = Modifier.fillMaxWidth().padding(8.dp)) {
         Column(){
-           Text(text =  food.title, style=MaterialTheme.typography.h2)
-            Text(text =  food.description, style=MaterialTheme.typography.body1,
+           Text(text =  food.title, style=MaterialTheme.typography.displayMedium)
+            Text(text =  food.description, style=MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.fillMaxWidth(0.75f).padding(top=5.dp, bottom=5.dp))
-            Text(text = "%.2f".format(food.price), style = MaterialTheme.typography.body2)
+            Text(text = "%.2f".format(food.price), style = MaterialTheme.typography.bodyMedium)
         }
 
-        GlideImage(
-            model = food.image,
-            contentDescription="Food Image",
-            modifier = Modifier.clip(RoundedCornerShape(1.dp))
-        )
+//        GlideImage(
+//            model = food.image,
+//            contentDescription="Food Image",
+//            modifier = Modifier.clip(RoundedCornerShape(1.dp))
+//        )
     }
     }
     Divider(
@@ -109,7 +111,8 @@ fun ScrollableRow() {
     ) {
         repeat(20) {
             Card(
-                elevation = 16.dp,
+//                elevation = 16.dp,
+                elevation = CardDefaults.cardElevation(16.dp),
                 modifier = Modifier.padding(16.dp)
             ) {
                 Text(

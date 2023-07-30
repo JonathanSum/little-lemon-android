@@ -4,7 +4,7 @@ package com.example.littlelemon
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,14 +13,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+//import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+//import com.bumptech.glide.integration.compose.GlideImage
 import kotlinx.coroutines.CoroutineScope
 
-@OptIn(ExperimentalGlideComposeApi::class)
+//@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun FoodDetail(navController: NavHostController, id: Int, databaseMenuItems: List<MenuItemRoom>,
-               scaffoldState: ScaffoldState, scope: CoroutineScope
+
 ) {
     if (databaseMenuItems.isEmpty()) {
         Text("Error: Menu List is empty.")
@@ -36,20 +36,20 @@ fun FoodDetail(navController: NavHostController, id: Int, databaseMenuItems: Lis
             mutableStateOf(1)
         }
 
-        TopAppBar(navController, scaffoldState, scope)
-        GlideImage(
-            model = food[0].image,
-            contentDescription = "Food Image",
-            modifier = Modifier
-                .clip(RoundedCornerShape(1.dp))
-                .padding(vertical = 50.dp)
-        )
+        TopAppBar(navController)
+//        GlideImage(
+//            model = food[0].image,
+//            contentDescription = "Food Image",
+//            modifier = Modifier
+//                .clip(RoundedCornerShape(1.dp))
+//                .padding(vertical = 50.dp)
+//        )
 
         Column(horizontalAlignment =Alignment.CenterHorizontally, modifier = Modifier.padding(horizontal = 20.dp)) {
             Text(text = food[0].title, style =
-            MaterialTheme.typography.h1)
+            MaterialTheme.typography.displayLarge)
             Text(text = food[0].description, style =
-            MaterialTheme.typography.body1)
+            MaterialTheme.typography.bodyLarge)
 
             Counter(counter,{counter++},{counter--})
 
@@ -87,19 +87,19 @@ fun Counter(counter:Int,increase:()->Unit,decrease:()->Unit) {
             decrease()
         }) {
             Text(
-                text = "-", style = MaterialTheme.typography.h2
+                text = "-", style = MaterialTheme.typography.displayMedium
             )
         }
         Text(
             text = counter.toString(),
-            style = MaterialTheme.typography.h2,
+            style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(16.dp)
         )
         TextButton(onClick = {
             increase()
         }) {
             Text(
-                text = "+", style = MaterialTheme.typography.h2
+                text = "+", style = MaterialTheme.typography.displayMedium
             )
         }
     }

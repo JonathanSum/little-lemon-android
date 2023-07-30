@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
+//import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+//import com.bumptech.glide.integration.compose.GlideImage
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -31,12 +31,10 @@ import kotlinx.coroutines.launch
  fun HomeScreen(
     navController: NavHostController,
     databaseMenuItems: List<MenuItemRoom>,
-    scaffoldState: ScaffoldState,
-    scope: CoroutineScope
 ){
 
 
-    HomePage(navController, databaseMenuItems,scaffoldState, scope )
+    HomePage(navController, databaseMenuItems)
 //    Column(modifier = Modifier.fillMaxSize(),
 //        verticalArrangement = Arrangement.Center,
 //        horizontalAlignment = Alignment.CenterHorizontally){
@@ -56,7 +54,7 @@ import kotlinx.coroutines.launch
 }
 
 
-@OptIn(ExperimentalGlideComposeApi::class)
+//@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 private fun MenuItemsList(databaseMenuItems:  List<MenuItemRoom>) {
     if (databaseMenuItems.isEmpty()) {
@@ -84,10 +82,10 @@ private fun MenuItemsList(databaseMenuItems:  List<MenuItemRoom>) {
                         ) {
 //                        Text(menuItem.description)
 
-                            GlideImage(
-                                model = menuItem.image,
-                                contentDescription="Food Image"
-                            )
+//                            GlideImage(
+//                                model = menuItem.image,
+//                                contentDescription="Food Image"
+//                            )
 //                        Text(
 //                            modifier = Modifier
 //                                .weight(1f)
@@ -114,23 +112,26 @@ private fun MenuItemsList(databaseMenuItems:  List<MenuItemRoom>) {
 
 }
 @Composable
-fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItemRoom>,
-             scaffoldState: ScaffoldState, scope: CoroutineScope){
-    val scaffoldState = rememberScaffoldState()
+fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItemRoom>) {
+//    val scaffoldState = rememberScaffoldState()
+//    val scope = rememberCoroutineScope()
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
-    Scaffold(
-        scaffoldState = scaffoldState,
+    ModalNavigationDrawer(
+        drawerState = drawerState,
         drawerContent = {
-            DrawerPanel(scaffoldState = scaffoldState,scope=scope)
-                        },
+            ModalDrawerSheet { /* Drawer content */ }
+        },
+    ) {
+    Scaffold(
+        topBar = { TopAppBar(navController) })
+    { contentPadding ->
 
-    topBar = {TopAppBar(navController, scaffoldState,scope = scope )})
-    {contentPadding ->
 
-
-    Column(modifier = Modifier.padding(contentPadding)){
-        UpperPanel()
-        LowerPanel(navController, databaseMenuItems)
-    }
+        Column(modifier = Modifier.padding(contentPadding)) {
+            UpperPanel()
+            LowerPanel(navController, databaseMenuItems)
+            }
+        }
     }
 }
