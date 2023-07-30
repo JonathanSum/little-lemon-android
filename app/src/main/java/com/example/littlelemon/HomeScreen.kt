@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -38,35 +41,26 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
- fun HomeScreen(navController: NavController, databaseMenuItems:  List<MenuItemRoom>){
+ fun HomeScreen(navController: NavHostController, databaseMenuItems:  List<MenuItemRoom>){
 
 
-
-    Column(modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally){
-        Text(text="HomeScreen Screen", fontSize=48.sp)
-        Button(onClick = {
-            navController.navigate(Profile.route)
-        }){
-            Text(text="Profile")
-        }
-
-
-
-        if (databaseMenuItems.isEmpty()) {
-            Text(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(16.dp),
-                text = "The menu is empty"
-            )
-        } else {
-            MenuItemsList(databaseMenuItems)
-        }
-
-
-    }
+    HomePage(navController, databaseMenuItems)
+//    Column(modifier = Modifier.fillMaxSize(),
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally){
+//        Text(text="HomeScreen Screen", fontSize=48.sp)
+//        Button(onClick = {
+//            navController.navigate(Profile.route)
+//        }){
+//            Text(text="Profile")
+//        }
+//
+//
+//
+//        MenuItemsList(databaseMenuItems)
+//
+//
+//    }
 }
 
 
@@ -126,4 +120,24 @@ private fun MenuItemsList(databaseMenuItems:  List<MenuItemRoom>) {
     }
 
 
+}
+@Composable
+fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItemRoom>){
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+    Scaffold(
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            DrawerPanel(scaffoldState = scaffoldState,scope=scope)
+                        },
+
+    topBar = {TopAppBar(scaffoldState,scope = scope )})
+    {contentPadding ->
+
+
+    Column(modifier = Modifier.padding(contentPadding)){
+        UpperPanel()
+        LowerPanel(navController, databaseMenuItems)
+    }
+    }
 }
