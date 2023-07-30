@@ -13,3 +13,7 @@ object OnboardingRoute:Destinations{
 object Profile:Destinations{
     override val route = "Profile"
 }
+object FoodDetail: Destinations{
+    override val route = "FoodDetail"
+    const val argFoodId = "foodId"
+}

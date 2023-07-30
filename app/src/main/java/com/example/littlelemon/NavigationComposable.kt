@@ -2,9 +2,11 @@ package com.example.littlelemon
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 class NavigationComposable {
 }
@@ -19,11 +21,8 @@ fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit,
     //Check the user is logged in or not
 
 
-
-
     NavHost(navController = navController,
-        startDestination =if (!logged) Home.route else OnboardingRoute.route
-
+        startDestination = if (!logged) Home.route else OnboardingRoute.route
     ){
         composable(Home.route){
             HomeScreen(navController, databaseMenuItems)
@@ -34,6 +33,17 @@ fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit,
         composable(Profile.route){
             ProfileScreen(navController,onLogout, sharedPreferences)
         }
+        composable(FoodDetail.route+"/{${FoodDetail.argFoodId}",
+            arguments = listOf(navArgument(FoodDetail.argFoodId){
+                type = NavType.IntType
+                        })
+        ){
+            val id =
+                requireNotNull(it.arguments?.getInt(FoodDetail.argFoodId)){
+                    FoodDetail(id, databaseMenuItems)
+                }
+        }
+
     }
 
 }
