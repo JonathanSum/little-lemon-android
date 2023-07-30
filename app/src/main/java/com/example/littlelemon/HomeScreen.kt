@@ -131,7 +131,7 @@ fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItem
             DrawerPanel(scaffoldState = scaffoldState,scope=scope)
                         },
 
-    topBar = {TopAppBar(scaffoldState,scope = scope )})
+    topBar = {TopAppBar(navController, scaffoldState,scope = scope )})
     {contentPadding ->
 
 

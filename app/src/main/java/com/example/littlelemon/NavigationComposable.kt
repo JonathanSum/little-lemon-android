@@ -8,8 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 
-class NavigationComposable {
-}
+
 
 //@Preview(showBackground=true)
 @Composable
@@ -33,15 +32,16 @@ fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit,
         composable(Profile.route){
             ProfileScreen(navController,onLogout, sharedPreferences)
         }
-        composable(FoodDetail.route+"/{${FoodDetail.argFoodId}",
+        composable(FoodDetail.route+"/{${FoodDetail.argFoodId}}",
             arguments = listOf(navArgument(FoodDetail.argFoodId){
                 type = NavType.IntType
                         })
         ){
             val id =
                 requireNotNull(it.arguments?.getInt(FoodDetail.argFoodId)){
-                    FoodDetail(id, databaseMenuItems)
+                    "Food id is null"
                 }
+            FoodDetail(navController, id, databaseMenuItems)
         }
 
     }

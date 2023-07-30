@@ -10,11 +10,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-@Preview
+import androidx.navigation.NavHostController
+
+//@Preview
 @Composable
-fun TopAppBar(scaffoldState: ScaffoldState? = null, scope: CoroutineScope? = null){
+fun TopAppBar(navController: NavHostController, scaffoldState: ScaffoldState? = null, scope: CoroutineScope? = null){
     Row(horizontalArrangement = Arrangement.SpaceBetween,
         modifier=Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically) {
@@ -32,11 +36,11 @@ fun TopAppBar(scaffoldState: ScaffoldState? = null, scope: CoroutineScope? = nul
                 .padding(horizontal=20.dp)
         )
         IconButton(onClick = {
-            scope?.launch{scaffoldState?.drawerState?.open()}
+            navController.navigate(Profile.route)
         }) {
             Image(painter = painterResource(id = R.drawable.icon),
                 contentDescription = "Right user Icon",
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp).clip(RoundedCornerShape(50.dp))
             )
         }
         }

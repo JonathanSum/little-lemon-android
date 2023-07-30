@@ -55,21 +55,21 @@ fun WeeklySpecialCard(){
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun MenuDish(navController: NavHostController? = null, dish: MenuItemRoom){
+fun MenuDish(navController: NavHostController? = null, food: MenuItemRoom){
     Card(onClick = {
 //        Log.d("AAA", "Click ${dish.id}")
-        navController?.navigate(FoodDetail.route + "/${dish.id}")
+        navController?.navigate(FoodDetail.route + "/${food.id}")
     }){
     Row( modifier = Modifier.fillMaxWidth().padding(8.dp)) {
         Column(){
-           Text(text =  dish.title, style=MaterialTheme.typography.h2)
-            Text(text =  dish.description, style=MaterialTheme.typography.body1,
+           Text(text =  food.title, style=MaterialTheme.typography.h2)
+            Text(text =  food.description, style=MaterialTheme.typography.body1,
                 modifier = Modifier.fillMaxWidth(0.75f).padding(top=5.dp, bottom=5.dp))
-            Text(text = "%.2f".format(dish.price), style = MaterialTheme.typography.body2)
+            Text(text = "%.2f".format(food.price), style = MaterialTheme.typography.body2)
         }
 
         GlideImage(
-            model = dish.image,
+            model = food.image,
             contentDescription="Food Image",
             modifier = Modifier.clip(RoundedCornerShape(1.dp))
         )
