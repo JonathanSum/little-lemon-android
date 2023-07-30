@@ -18,18 +18,24 @@ import androidx.navigation.NavHostController
 
 //@Preview
 @Composable
-fun TopAppBar(navController: NavHostController, scaffoldState: ScaffoldState? = null, scope: CoroutineScope? = null){
+fun TopAppBar(navController: NavHostController ,scaffoldState: ScaffoldState, scope: CoroutineScope){
     Row(horizontalArrangement = Arrangement.SpaceBetween,
         modifier=Modifier.fillMaxWidth(),
+
         verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = {
-                scope?.launch{scaffoldState?.drawerState?.open()}
-            }) {
-                Image(painter = painterResource(id = R.drawable.ic_launcher),
-                contentDescription = "Left Open Icon",
-                    modifier = Modifier.size(24.dp)
+
+
+                IconButton(onClick = {
+                    scope.launch { scaffoldState.drawerState.open() }
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.baseline_menu_24),
+                        contentDescription = "Left Open Icon",
+                        modifier = Modifier.size(24.dp)
                     )
-            }
+                }
+
+
         Image(painter = painterResource(id = R.drawable.littlelemonimgtxt),
             contentDescription = "little lemon img txt",
             modifier = Modifier.fillMaxWidth(0.5f)

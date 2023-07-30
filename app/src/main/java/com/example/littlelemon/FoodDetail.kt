@@ -4,10 +4,7 @@ package com.example.littlelemon
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,10 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun FoodDetail(navController: NavHostController, id: Int, databaseMenuItems: List<MenuItemRoom>) {
+fun FoodDetail(navController: NavHostController, id: Int, databaseMenuItems: List<MenuItemRoom>,
+               scaffoldState: ScaffoldState, scope: CoroutineScope
+) {
     if (databaseMenuItems.isEmpty()) {
         Text("Error: Menu List is empty.")
     }
@@ -36,14 +36,16 @@ fun FoodDetail(navController: NavHostController, id: Int, databaseMenuItems: Lis
             mutableStateOf(1)
         }
 
-        TopAppBar(navController)
+        TopAppBar(navController, scaffoldState, scope)
         GlideImage(
             model = food[0].image,
             contentDescription = "Food Image",
-            modifier = Modifier.clip(RoundedCornerShape(1.dp)).padding(vertical = 50.dp)
+            modifier = Modifier
+                .clip(RoundedCornerShape(1.dp))
+                .padding(vertical = 50.dp)
         )
 
-
+        Column(horizontalAlignment =Alignment.CenterHorizontally, modifier = Modifier.padding(horizontal = 20.dp)) {
             Text(text = food[0].title, style =
             MaterialTheme.typography.h1)
             Text(text = food[0].description, style =
@@ -52,7 +54,9 @@ fun FoodDetail(navController: NavHostController, id: Int, databaseMenuItems: Lis
             Counter(counter,{counter++},{counter--})
 
             Button(
-                modifier = Modifier.fillMaxWidth(0.75f).padding(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth(0.75f)
+                    .padding(10.dp, top = 20.dp),
                 onClick = {
                     //No back server yet
                 },
@@ -61,6 +65,8 @@ fun FoodDetail(navController: NavHostController, id: Int, databaseMenuItems: Lis
                 Text(text = total, textAlign = TextAlign.Center)
 
             }
+        }
+
 
     }
 }
@@ -72,7 +78,9 @@ fun Counter(counter:Int,increase:()->Unit,decrease:()->Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp),
     ) {
 
         TextButton(onClick = {

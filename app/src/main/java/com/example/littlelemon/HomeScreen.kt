@@ -1,29 +1,17 @@
 package com.example.littlelemon
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.room.Room
-import com.bumptech.glide.Glide
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 
@@ -35,16 +23,20 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
- fun HomeScreen(navController: NavHostController, databaseMenuItems:  List<MenuItemRoom>){
+ fun HomeScreen(
+    navController: NavHostController,
+    databaseMenuItems: List<MenuItemRoom>,
+    scaffoldState: ScaffoldState,
+    scope: CoroutineScope
+){
 
 
-    HomePage(navController, databaseMenuItems)
+    HomePage(navController, databaseMenuItems,scaffoldState, scope )
 //    Column(modifier = Modifier.fillMaxSize(),
 //        verticalArrangement = Arrangement.Center,
 //        horizontalAlignment = Alignment.CenterHorizontally){
@@ -122,7 +114,8 @@ private fun MenuItemsList(databaseMenuItems:  List<MenuItemRoom>) {
 
 }
 @Composable
-fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItemRoom>){
+fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItemRoom>,
+             scaffoldState: ScaffoldState, scope: CoroutineScope){
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     Scaffold(
