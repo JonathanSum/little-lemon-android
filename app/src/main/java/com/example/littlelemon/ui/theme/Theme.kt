@@ -25,9 +25,9 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = LittleLemonColor.yellow,
     tertiary = LittleLemonColor.charcoal,
-    secondary = LittleLemonColor.cloud,
-    background = LittleLemonColor.cloud,
-    surfaceVariant = LittleLemonColor.white
+    secondary = LittleLemonColor.yellow,
+    background = LittleLemonColor.yellow,
+    surfaceVariant = LittleLemonColor.yellow
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,

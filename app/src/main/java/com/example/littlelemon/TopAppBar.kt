@@ -1,7 +1,6 @@
 package com.example.littlelemon
 
 import androidx.compose.material3.IconButton
-//import androidx.compose.material3.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,12 +13,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DrawerState
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 
 //@Preview
 @Composable
-fun TopAppBar(navController: NavHostController, drawerState:  DrawerState?=null, scope: CoroutineScope?=null){
+fun TopAppBar(navController: NavHostController, turnOn : Boolean = true, openMenu:()->Unit){
     Row(horizontalArrangement = Arrangement.SpaceBetween,
         modifier=Modifier.fillMaxWidth(),
 
@@ -27,17 +25,14 @@ fun TopAppBar(navController: NavHostController, drawerState:  DrawerState?=null,
 
 
         IconButton(onClick = {
-            scope?.launch {
-                drawerState?.apply {
-                    if (isClosed) open() else close()
-                }
-            }
+                openMenu()
         }) {
+            if(turnOn){
             Image(
                 painter = painterResource(id = R.drawable.baseline_menu_24),
                 contentDescription = "Left Open Icon",
                 modifier = Modifier.size(24.dp)
-            )
+            )}
         }
 
 

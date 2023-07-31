@@ -47,11 +47,6 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 @Composable
 fun LowerPanel(navController: NavHostController, foods: List<MenuItemRoom> = listOf()){
 
-
-
-
-
-
     var results = foods.sortedBy{it.title}
 
 
