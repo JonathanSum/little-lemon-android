@@ -4,15 +4,12 @@ package com.example.littlelemon
 //import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 //import com.bumptech.glide.integration.compose.GlideImage
 import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -45,60 +42,96 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LowerPanel(navController: NavHostController, foods: List<MenuItemRoom> = listOf()){
-    var searchPhrase by remember {mutableStateOf("")}
+
+
+
+
     var orderMenuItems by remember {mutableStateOf(false)}
+
     var results = if (orderMenuItems) foods.sortedBy{it.title} else foods
-    results = if(searchPhrase != "") foods.filter {it.title.contains(searchPhrase)} else foods
+
+//    Log.d("Debug", " Before Testing")
+//
+//    for ( x in results){
+//        Log.d("Debug", x.title)
+//    }
+//    Log.d("Debug","Testing ended")
 
     Column(modifier = Modifier.background(LittleLemonColor.white)){
         Column(modifier = Modifier
             .fillMaxWidth()
             .background(LittleLemonColor.green),
-//            contentAlignment = Alignment.Center
+
         ) {
-//            SimpleFilledTextFieldSample()
+
 
             val textField = remember { FocusRequester() }
             val focusManager = LocalFocusManager.current
+            var iconName by remember { mutableStateOf(R.drawable.baseline_search_24) }
+            var searchFocus by remember { mutableStateOf(false) }
+
+            var searchPhrase by remember {mutableStateOf("")}
+            if(searchPhrase != "") {
+                Log.d("Debug", " Before Testing")
+
+                for ( x in results){
+                    Log.d("Debug", x.title)
+                }
+                Log.d("Debug","Testing ended")
+
+
+//                results = results.filter { it.title.contains(searchPhrase) }
+                results = if (searchPhrase !="")
+                          results.filter { it.title.contains(searchPhrase) } else results
+                Log.d("Debug", "result of filtering with title"+ searchPhrase)
+                Log.d("Debug","Print started with size of "+results.size)
+                for ( x in results){
+                    Log.d("Debug", x.title)
+                }
+                Log.d("Debug","Print ended")
+
+
+
+            }
+            else foods
+
             TextField(
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = LittleLemonColor.LightlyGrey,
                     focusedContainerColor = LittleLemonColor.cloud,
                 ),
-                textStyle = TextStyle(color = LittleLemonColor.yellow),
+                textStyle = TextStyle(color = LittleLemonColor.charcoal),
 
-                modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
-                    .focusRequester(textField),
+                modifier = Modifier.padding(vertical = 16.dp, horizontal = 18.dp)
+                    .focusRequester(textField).fillMaxWidth().onFocusChanged {
+                        iconName = if (it.isFocused) R.drawable.baseline_arrow_back_24 else R.drawable.baseline_search_24
 
+                        searchFocus = it.isFocused
+                    }.clip(RoundedCornerShape(10.dp)),
                 value = searchPhrase,
                 onValueChange = {
                     searchPhrase = it
-                    if (it.length >5) {
-                        Log.d("Log Message", "textField.captureFocus()")
-//                        textField.captureFocus()
-                        focusManager.clearFocus()
-                    } else {
-                        Log.d("Log Message", "textField.freeFocus()")
-                        textField.freeFocus()
 
-                    }
-                },label= {
-                    Row(){
+                },
+                leadingIcon = {
+                    IconButton(
+                        onClick = {
+                            if (searchFocus){focusManager.clearFocus()}
+                        },
+                    ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.baseline_search_24),
-                            contentDescription = "Search Icon"
+                            painter = painterResource(id =
+
+                            if (searchFocus) R.drawable.baseline_arrow_back_24 else R.drawable.baseline_search_24
+                            ),
+                            contentDescription = "Search Icon",
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text("Enter search phrase", modifier = Modifier.fillMaxWidth())
                     }
-                }
+                },
+                placeholder = {Text(color = LittleLemonColor.charcoal, text = "Enter search phrase")}
 
             )
-            Button(onClick = {
 
-            }) {
-                Text("Request focus on TextField")
-            }
         }
         OrderTitle()
         LazyRow(state = rememberLazyListState(), modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
