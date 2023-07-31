@@ -1,16 +1,13 @@
 package com.example.littlelemon
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,7 +26,9 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.core.content.edit
+import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 @Composable
 fun ProfileScreen(navController: NavController,onLogout:()->Unit, sharedPreferences: android.content.SharedPreferences){
@@ -53,12 +52,6 @@ fun ProfileScreen(navController: NavController,onLogout:()->Unit, sharedPreferen
         lastNameLiveData.value = sharedPreferences.getString("lastName", "")
         emailLiveData.value = sharedPreferences.getString("email", "")
 
-        Text(text="ProfileScreen Screen", fontSize=48.sp)
-        Button(onClick = {
-            navController.navigate(Home.route)
-        }){
-            Text(text="Home")
-        }
 
         ProfileBlock(navController, firstNameLiveData.value.toString(),
             lastNameLiveData.value.toString(),
@@ -68,7 +61,7 @@ fun ProfileScreen(navController: NavController,onLogout:()->Unit, sharedPreferen
                 lastNameLiveData.value = it
             },{
                 emailLiveData.value = it
-            },onLogout
+            },onLogout, {navController.navigate(Home.route)}
             )
     }
 }
@@ -78,7 +71,8 @@ fun ProfileBlock(navController:NavController, firstName:String,
                  email:String,
                  onChangefName:(String)->Unit,
                  onChangelName:(String)->Unit,
-                 onChangeEmail:(String)->Unit,onLogout:()->Unit){
+                 onChangeEmail:(String)->Unit,onLogout:()->Unit,
+                homeRedirect:()->Unit){
     val scrollState = rememberScrollState()
     val context = LocalContext.current
     Column(
@@ -95,7 +89,10 @@ fun ProfileBlock(navController:NavController, firstName:String,
                     // adding some zoom limits (min 50%, max 200%)
                     scaleX = maxOf(.5f, minOf(3f, 5f)),
                     scaleY = maxOf(.5f, minOf(3f, 5f)),
-                ),
+                )
+                .clickable(onClick = {
+                    homeRedirect()
+                })
         )
 
         Text(text="Personal information",
@@ -103,13 +100,16 @@ fun ProfileBlock(navController:NavController, firstName:String,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 60.dp, bottom = 60.dp),
-            textAlign = TextAlign.Left,)
+            textAlign = TextAlign.Left,
+        color = LittleLemonColor.charcoal)
+            
+
 
         Text(text="First Name",modifier = Modifier
             .fillMaxWidth()
             .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-
-            textAlign = TextAlign.Left,)
+            textAlign = TextAlign.Left,
+            color = LittleLemonColor.charcoal)
         OutlinedTextField(
             value = firstName,
             modifier = Modifier
@@ -118,12 +118,14 @@ fun ProfileBlock(navController:NavController, firstName:String,
             onValueChange = onChangefName,
 //            label = {Text(text = "First Name")} ,
             shape = RoundedCornerShape(20)
+            , textStyle = TextStyle(color = LittleLemonColor.charcoal),
         )
         Text(
             text="Last Name",modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            textAlign = TextAlign.Left,)
+            textAlign = TextAlign.Left,
+            color = LittleLemonColor.charcoal)
         OutlinedTextField(
             value = lastName,
             modifier = Modifier
@@ -131,7 +133,7 @@ fun ProfileBlock(navController:NavController, firstName:String,
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             onValueChange =
                     onChangelName
-            ,
+            , textStyle = TextStyle(color = LittleLemonColor.charcoal),
 //            label = {Text(text = "Last Name")},
             shape = RoundedCornerShape(20)
         )
@@ -139,7 +141,8 @@ fun ProfileBlock(navController:NavController, firstName:String,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            textAlign = TextAlign.Left,)
+            textAlign = TextAlign.Left,
+            color = LittleLemonColor.charcoal)
         OutlinedTextField(
             value = email,
             modifier = Modifier
@@ -147,7 +150,7 @@ fun ProfileBlock(navController:NavController, firstName:String,
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             onValueChange =
                 onChangeEmail
-            ,
+            , textStyle = TextStyle(color = LittleLemonColor.charcoal),
 //            label = {Text(text = "Email")},
             shape = RoundedCornerShape(20)
         )
@@ -165,7 +168,7 @@ fun ProfileBlock(navController:NavController, firstName:String,
             shape = RoundedCornerShape(20),
         ){
             Text(
-                text = "Log out ",
+                text = "Log out ",color = LittleLemonColor.charcoal
             )
         }
     }

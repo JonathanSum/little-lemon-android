@@ -1,6 +1,6 @@
 package com.example.littlelemon.ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -8,24 +8,24 @@ import androidx.compose.ui.unit.sp
 
 // Set of Material typography styles to start with
 val Typography = Typography(
-    h1 = TextStyle(
+    displayLarge = TextStyle(
         fontSize = 26.sp,
         fontWeight = FontWeight.Bold,
         color = LittleLemonColor.charcoal
     ),
-    h2 = TextStyle(
+    displayMedium = TextStyle(
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
         color = LittleLemonColor.charcoal
     ),
-    body1 = TextStyle(
-        color = LittleLemonColor.green
+    bodyLarge = TextStyle(
+        color = LittleLemonColor.charcoal
     ),
-    body2 = TextStyle(
+    bodyMedium = TextStyle(
         fontWeight = FontWeight.Bold,
-        color = LittleLemonColor.green
+        color = LittleLemonColor.charcoal
     ),
-    button = TextStyle(
+    labelLarge = TextStyle(
         fontSize = 14.sp,
         fontWeight = FontWeight.Bold
     )
