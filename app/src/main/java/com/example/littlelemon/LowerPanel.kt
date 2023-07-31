@@ -11,6 +11,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,9 +31,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -46,16 +50,10 @@ fun LowerPanel(navController: NavHostController, foods: List<MenuItemRoom> = lis
 
 
 
-    var orderMenuItems by remember {mutableStateOf(false)}
 
-    var results = if (orderMenuItems) foods.sortedBy{it.title} else foods
 
-//    Log.d("Debug", " Before Testing")
-//
-//    for ( x in results){
-//        Log.d("Debug", x.title)
-//    }
-//    Log.d("Debug","Testing ended")
+    var results = foods.sortedBy{it.title}
+
 
     Column(modifier = Modifier.background(LittleLemonColor.white)){
         Column(modifier = Modifier
@@ -71,29 +69,10 @@ fun LowerPanel(navController: NavHostController, foods: List<MenuItemRoom> = lis
             var searchFocus by remember { mutableStateOf(false) }
 
             var searchPhrase by remember {mutableStateOf("")}
-            if(searchPhrase != "") {
-                Log.d("Debug", " Before Testing")
-
-                for ( x in results){
-                    Log.d("Debug", x.title)
-                }
-                Log.d("Debug","Testing ended")
-
-
-//                results = results.filter { it.title.contains(searchPhrase) }
-                results = if (searchPhrase !="")
-                          results.filter { it.title.contains(searchPhrase) } else results
-                Log.d("Debug", "result of filtering with title"+ searchPhrase)
-                Log.d("Debug","Print started with size of "+results.size)
-                for ( x in results){
-                    Log.d("Debug", x.title)
-                }
-                Log.d("Debug","Print ended")
-
-
-
+            if(searchPhrase.isNotEmpty()) {
+                results =  results.filter { it.title.contains(searchPhrase, ignoreCase = true) }
             }
-            else foods
+
 
             TextField(
                 colors = TextFieldDefaults.colors(
@@ -119,26 +98,39 @@ fun LowerPanel(navController: NavHostController, foods: List<MenuItemRoom> = lis
                             if (searchFocus){focusManager.clearFocus()}
                         },
                     ) {
-                        Icon(
-                            painter = painterResource(id =
-
-                            if (searchFocus) R.drawable.baseline_arrow_back_24 else R.drawable.baseline_search_24
-                            ),
-                            contentDescription = "Search Icon",
-                        )
+                         Icon( imageVector = Icons.Default.Search, contentDescription = "")
                     }
                 },
-                placeholder = {Text(color = LittleLemonColor.charcoal, text = "Enter search phrase")}
+                placeholder = {
+                    Text(color = LittleLemonColor.charcoal, text = "Enter search phrase",
+                        modifier = Modifier.fillMaxWidth().padding(start=36.dp)
+                    )}
 
             )
 
         }
         OrderTitle()
+        var selected by remember {mutableStateOf("")}
+        if(selected.isNotEmpty()){
+            results = results.filter {
+                it.category.equals(selected, ignoreCase = true)
+            }
+
+        }
+
+
         LazyRow(state = rememberLazyListState(), modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
 
             itemsIndexed(Categories){_, category->
-//                Log.d("Log Message dish", dish.title)
-                MenuCategory(category)
+
+
+
+
+                MenuCategory(category, selected) {
+
+                    selected = if (selected.isNotBlank()){ "" } else{ category }
+
+                }
             }
         }
 
@@ -212,14 +204,20 @@ fun OrderTitle(){
 }
 //select bar
 @Composable
-fun MenuCategory(category: String){
+fun MenuCategory(category: String, selected: String, selectF:()->Unit){
+
     Button(
-        onClick = {},
-    colors = ButtonDefaults.buttonColors(containerColor = LittleLemonColor.cloud),
+        onClick = {
+            selectF()
+        },
+    colors = ButtonDefaults.buttonColors(containerColor =
+    if(selected == category) LittleLemonColor.green else LittleLemonColor.cloud),
     shape = RoundedCornerShape(50),
         modifier = Modifier.padding(5.dp)
     ){
-        Text(text = category, color = LittleLemonColor.green)
+        Text(text = category, color =
+        if(selected == category) LittleLemonColor.cloud else LittleLemonColor.green
+        )
     }
 }
 val Categories = listOf<String>(

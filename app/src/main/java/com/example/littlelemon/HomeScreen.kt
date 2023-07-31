@@ -130,7 +130,17 @@ fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItem
 
         Column(modifier = Modifier.padding(contentPadding)) {
             UpperPanel()
-            LowerPanel(navController, databaseMenuItems)
+//             add is not empty check here
+                if (databaseMenuItems.isEmpty()) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(16.dp),
+                        text = "The menu is empty"
+                    )
+                } else {
+                    LowerPanel(navController, databaseMenuItems)
+                }
             }
         }
     }

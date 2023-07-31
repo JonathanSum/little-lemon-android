@@ -123,17 +123,7 @@ class MainActivity : ComponentActivity() {
 
                 val databaseMenuItems by database.menuItemDao().getAll()
                     .observeAsState(emptyList())
-                // add is not empty check here
-//                if (databaseMenuItems.isEmpty()) {
-//                    Text(
-//                        modifier = Modifier
-//                            .fillMaxHeight()
-//                            .padding(16.dp),
-//                        text = "The menu is empty"
-//                    )
-//                } else {
-//                    MenuItemsList(databaseMenuItems)
-//                }
+
 
 
                 MyNavigation(logged, ::onSubmit,::onLogOut, sharedPreferences, databaseMenuItems)
