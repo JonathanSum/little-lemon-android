@@ -109,7 +109,7 @@ fun HomePage(navController: NavHostController, databaseMenuItems:  List<MenuItem
                     color = LittleLemonColor.yellow)
                 Divider()
                 NavigationDrawerItem(
-                    label = { Text(text = "Drawer Item", color = LittleLemonColor.charcoal)},
+                    label = { Text(text = "Contact Information", color = LittleLemonColor.charcoal)},
                     selected = false,
                     onClick = { /*TODO*/ },
                     colors =

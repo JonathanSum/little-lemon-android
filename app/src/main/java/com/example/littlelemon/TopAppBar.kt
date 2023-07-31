@@ -19,7 +19,7 @@ import androidx.navigation.NavHostController
 @Composable
 fun TopAppBar(navController: NavHostController, turnOn : Boolean = true, openMenu:()->Unit){
     Row(horizontalArrangement = Arrangement.SpaceBetween,
-        modifier=Modifier.fillMaxWidth(),
+        modifier=Modifier.fillMaxWidth().padding(top=10.dp),
 
         verticalAlignment = Alignment.CenterVertically) {
 
