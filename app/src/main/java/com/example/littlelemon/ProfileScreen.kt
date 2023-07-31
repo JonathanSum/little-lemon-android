@@ -26,6 +26,7 @@ import com.example.littlelemon.ui.theme.LittleLemonColor
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.core.content.edit
 import com.example.littlelemon.ui.theme.LittleLemonTheme
 
@@ -117,6 +118,7 @@ fun ProfileBlock(navController:NavController, firstName:String,
             onValueChange = onChangefName,
 //            label = {Text(text = "First Name")} ,
             shape = RoundedCornerShape(20)
+            , textStyle = TextStyle(color = LittleLemonColor.charcoal),
         )
         Text(
             text="Last Name",modifier = Modifier
@@ -131,7 +133,7 @@ fun ProfileBlock(navController:NavController, firstName:String,
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             onValueChange =
                     onChangelName
-            ,
+            , textStyle = TextStyle(color = LittleLemonColor.charcoal),
 //            label = {Text(text = "Last Name")},
             shape = RoundedCornerShape(20)
         )
@@ -148,7 +150,7 @@ fun ProfileBlock(navController:NavController, firstName:String,
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             onValueChange =
                 onChangeEmail
-            ,
+            , textStyle = TextStyle(color = LittleLemonColor.charcoal),
 //            label = {Text(text = "Email")},
             shape = RoundedCornerShape(20)
         )

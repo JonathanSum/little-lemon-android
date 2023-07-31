@@ -30,14 +30,15 @@ fun UpperPanel(){
         fontWeight = FontWeight.Bold,        modifier = Modifier
                 .padding(top = 20.dp))
         Text(text = "Chicago",
-        fontSize = 24.sp)
+        fontSize = 24.sp, color = LittleLemonColor.cloud)
         Row(horizontalArrangement =  Arrangement.SpaceBetween,
         modifier = Modifier
             .padding(top = 20.dp)
         ){
             Text(modifier = Modifier
                 .fillMaxWidth(0.6f).padding(10.dp, end = 24.dp),
-                text = stringResource(id = R.string.description)
+                text = stringResource(id = R.string.description),
+                color = LittleLemonColor.cloud
             )
             Image(
                 painter = painterResource(id = R.drawable.upperpanelimage),

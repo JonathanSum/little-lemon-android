@@ -19,7 +19,7 @@ val Typography = Typography(
         color = LittleLemonColor.charcoal
     ),
     bodyLarge = TextStyle(
-        color = LittleLemonColor.cloud
+        color = LittleLemonColor.charcoal
     ),
     bodyMedium = TextStyle(
         fontWeight = FontWeight.Bold,

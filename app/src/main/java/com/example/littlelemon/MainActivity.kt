@@ -78,10 +78,7 @@ class MainActivity : ComponentActivity() {
                 sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
 
                 var  logged = false;
-//                Log.d("Log Message", "Hello Here started!!!")
-//                Log.d("Log Message", sharedPreferences.getString("firstName", "").toString())
-//                Log.d("Log Message", sharedPreferences.getString("lastName", "").toString())
-//                Log.d("Log Message", sharedPreferences.getString("email", "").toString())
+
                 val user  = User(firstNameLiveData.value!!,
                 lastNameLiveData.value!!,emailLiveData.value!!)
                 if(firstNameLiveData.value!!.isNotBlank()
@@ -90,28 +87,14 @@ class MainActivity : ComponentActivity() {
                     logged = true;
                 }
 
-                Log.d("Log Message", "Hello Here ended!!!")
+
                 fun onSubmit(firstName:String, lastName:String, email:String){
-                    Log.d("Log Message", "onSubmit started!!!")
+
                     sharedPreferences.edit(commit = true) { putString("firstName",firstName)}
                     sharedPreferences.edit(commit = true) { putString("lastName",lastName)}
                     sharedPreferences.edit(commit = true) { putString("email",email)}
 
-                    Log.d("Log Message", "onSubmit ended!!!")
-                    Log.d("Log Message", firstName)
-                    Log.d("Log Message", lastName)
-                    Log.d("Log Message", email)
-                    Log.d("Log Message", "Now the user information in sharedPreferences:")
 
-
-                    Log.d("Log Message", sharedPreferences.getString("firstName", "").toString())
-                    Log.d("Log Message", sharedPreferences.getString("lastName", "").toString())
-                    Log.d("Log Message", sharedPreferences.getString("email", "").toString())
-
-                    Log.d("Log Message", "Now the user information in LiveData:")
-                    Log.d("Log Message", firstNameLiveData.value!!)
-                    Log.d("Log Message", lastNameLiveData.value!!)
-                    Log.d("Log Message", emailLiveData.value!!)
                 }
                 fun onLogOut(){
                     sharedPreferences.edit(commit = true) { putString("firstName","")}

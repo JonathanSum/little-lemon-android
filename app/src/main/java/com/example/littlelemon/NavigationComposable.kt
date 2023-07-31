@@ -1,6 +1,7 @@
 package com.example.littlelemon
 
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 
 import androidx.navigation.NavType
@@ -22,9 +23,10 @@ fun MyNavigation(logged:Boolean, onSubmit:(f:String, l:String, e:String)->Unit,
 
 
     NavHost(navController = navController,
-        startDestination = if (!logged) Home.route else OnboardingRoute.route
+        startDestination = if (logged) Home.route else OnboardingRoute.route
     ){
-
+        Log.d("Log Message!!! logged: ",
+            logged.toString())
         composable(Home.route){
 
             HomeScreen(navController, databaseMenuItems)

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +34,7 @@ import com.example.littlelemon.ui.theme.LittleLemonTheme
 
 
 @Composable
-fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:String)->Unit){
+fun LoginScreen(navController: NavController, onSubmit: (f: String, l: String, e: String) -> Unit) {
 
 //    val SharedPreferences  sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 //    val value = sharedPreferences.getString("key", "default value")
@@ -43,120 +44,140 @@ fun LoginScreen(navController: NavController, onSubmit:(f:String, l:String, e:St
 //         putString("key",”value”)
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-    var firstName by remember{
+    var firstName by remember {
         mutableStateOf(TextFieldValue(""))
     }
-    var lastName by remember{
+    var lastName by remember {
         mutableStateOf(TextFieldValue(""))
     }
-    var email by remember{
+    var email by remember {
         mutableStateOf(TextFieldValue(""))
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.verticalScroll(scrollState)
 //        verticalArrangement = Arrangement.Center,
-    ){
+    ) {
         Image(
             painter = painterResource(
-                id = R.drawable.login_logo),
+                id = R.drawable.login_logo
+            ),
             contentDescription = "Logo Image",
-                    modifier = Modifier
-                        .requiredHeight(150.dp)
-                        .graphicsLayer(
-                            // adding some zoom limits (min 50%, max 200%)
-                            scaleX = maxOf(.5f, minOf(3f, 5f)),
-                            scaleY = maxOf(.5f, minOf(3f, 5f)),
-                        ),
+            modifier = Modifier
+                .requiredHeight(150.dp)
+                .graphicsLayer(
+                    // adding some zoom limits (min 50%, max 200%)
+                    scaleX = maxOf(.5f, minOf(3f, 5f)),
+                    scaleY = maxOf(.5f, minOf(3f, 5f)),
+                ),
         )
-        Row(verticalAlignment = Alignment.CenterVertically,
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = LittleLemonColor.darkGreen)
-                .requiredHeight(120.dp)) {
-            Text(text="Let's get to know you",
-                color= LittleLemonColor.white,
+                .background(color = LittleLemonColor.green)
+                .requiredHeight(120.dp)
+        ) {
+            Text(
+                text = "Let's get to know you",
+                color = LittleLemonColor.white,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 30.dp, end = 30.dp),
-                textAlign = TextAlign.Justify,)
+                textAlign = TextAlign.Justify,
+            )
         }
 
-        Text(text="Personal information",
+        Text(
+            text = "Personal information",
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 60.dp, bottom = 60.dp),
-            textAlign = TextAlign.Left,)
+            textAlign = TextAlign.Left, color = LittleLemonColor.charcoal
+        )
 
-        Text(text="First Name",modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-
-            textAlign = TextAlign.Left,)
+        Text(
+            text = "First Name",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 30.dp, end = 30.dp, top = 15.dp),
+            color = LittleLemonColor.charcoal,
+            textAlign = TextAlign.Left,
+        )
         OutlinedTextField(
             value = firstName,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {firstName = it},
-//            label = {Text(text = "First Name")} ,
+            onValueChange = { firstName = it },
+            textStyle = TextStyle(color = LittleLemonColor.charcoal),
             shape = RoundedCornerShape(20)
         )
         Text(
-            text="Last Name",modifier = Modifier
+            text = "Last Name", modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            textAlign = TextAlign.Left,)
+            textAlign = TextAlign.Left,
+            color = LittleLemonColor.charcoal
+        )
         OutlinedTextField(
             value = lastName,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            onValueChange = {
-                value -> lastName = value
-                            },
-//            label = {Text(text = "Last Name")},
+            onValueChange = { value ->
+                lastName = value
+            },
+            textStyle = TextStyle(color = LittleLemonColor.charcoal),
             shape = RoundedCornerShape(20)
         )
-        Text(text="Email",
+        Text(
+            text = "Email",
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
-            textAlign = TextAlign.Left,)
+            textAlign = TextAlign.Left,
+            color = LittleLemonColor.charcoal
+        )
         OutlinedTextField(
             value = email,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 15.dp),
             onValueChange = {
-                            email = it
-            },
+                email = it
+            }, textStyle = TextStyle(color = LittleLemonColor.charcoal),
 //            label = {Text(text = "Email")},
             shape = RoundedCornerShape(20)
         )
         Button(
             onClick = {
-                if(firstName.text.isNotBlank() && lastName.text.isNotBlank() && email.text.isNotBlank()){
+                if (firstName.text.isNotBlank() && lastName.text.isNotBlank() && email.text.isNotBlank()) {
                     onSubmit(firstName.text, lastName.text, email.text)
-                    Toast.makeText(context,"Registration successful!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Registration successful!", Toast.LENGTH_LONG).show()
                     navController.navigate(Home.route)
-                }else{
-                    Toast.makeText(context,"Registration unsuccessful. Please enter all data.", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Registration unsuccessful. Please enter all data.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-                      },
-            colors =  ButtonDefaults.buttonColors(LittleLemonColor.yellow),
+            },
+            colors = ButtonDefaults.buttonColors(LittleLemonColor.yellow),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp, top = 50.dp, bottom = 100.dp),
             shape = RoundedCornerShape(20),
-        ){
+        ) {
             Text(
-                text = "Register ",
+                text = "Register ", color = LittleLemonColor.charcoal
             )
         }
     }
 }
+
 @Composable
 fun HelloContent() {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -173,14 +194,14 @@ fun HelloContent() {
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            label = { Text("Name") }
+            label = { Text("Name") }, textStyle = TextStyle(color = LittleLemonColor.charcoal)
         )
     }
 }
 
 
 @Composable
-fun Onboarding(navController: NavController, onSubmit:(f:String, l:String, e:String)->Unit){
+fun Onboarding(navController: NavController, onSubmit: (f: String, l: String, e: String) -> Unit) {
 
     Surface(
         modifier = Modifier.fillMaxSize(),
