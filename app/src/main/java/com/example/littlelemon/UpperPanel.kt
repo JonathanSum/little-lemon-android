@@ -36,7 +36,7 @@ fun UpperPanel(){
             .padding(top = 20.dp)
         ){
             Text(modifier = Modifier
-                .fillMaxWidth(0.6f).padding(10.dp),
+                .fillMaxWidth(0.6f).padding(10.dp, end = 24.dp),
                 text = stringResource(id = R.string.description)
             )
             Image(
