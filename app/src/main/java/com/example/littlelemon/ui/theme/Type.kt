@@ -19,11 +19,11 @@ val Typography = Typography(
         color = LittleLemonColor.charcoal
     ),
     bodyLarge = TextStyle(
-        color = LittleLemonColor.green
+        color = LittleLemonColor.cloud
     ),
     bodyMedium = TextStyle(
         fontWeight = FontWeight.Bold,
-        color = LittleLemonColor.green
+        color = LittleLemonColor.charcoal
     ),
     labelLarge = TextStyle(
         fontSize = 14.sp,

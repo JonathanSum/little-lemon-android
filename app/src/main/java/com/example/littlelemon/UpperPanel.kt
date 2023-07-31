@@ -2,6 +2,7 @@ package com.example.littlelemon
 
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -14,18 +15,20 @@ import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import com.example.littlelemon.ui.theme.LittleLemonColor
 
 
 @Composable
 fun UpperPanel(){
     Column(
         modifier = Modifier
-            .padding(start = 12.dp,end = 12.dp, top=16.dp, bottom = 16.dp)
+            .padding(top=16.dp).background(LittleLemonColor.backgroundColorUpper).padding(horizontal = 10.dp)
     ){
         Text(text = "Little Lemon",
+        color = LittleLemonColor.yellow,
         fontSize = 40.sp,
-        fontWeight = FontWeight.Bold)
+        fontWeight = FontWeight.Bold,        modifier = Modifier
+                .padding(top = 20.dp))
         Text(text = "Chicago",
         fontSize = 24.sp)
         Row(horizontalArrangement =  Arrangement.SpaceBetween,
@@ -40,6 +43,8 @@ fun UpperPanel(){
                 painter = painterResource(id = R.drawable.upperpanelimage),
                 contentDescription = "Upper Panel Image",
                 modifier = Modifier.clip(RoundedCornerShape(10.dp))
+                    .clip(RoundedCornerShape(20.dp)),
+
             )
         }
     }

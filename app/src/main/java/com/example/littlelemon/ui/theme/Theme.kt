@@ -18,14 +18,16 @@ import androidx.core.view.ViewCompat
 private val DarkColorScheme = darkColorScheme(
     primary = Purple200,
     tertiary = Purple700,
-    secondary = Teal200
+    secondary = Teal200,
+
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = LittleLemonColor.yellow,
-    tertiary = Purple700,
-    secondary = LittleLemonColor.pink,
-
+    tertiary = LittleLemonColor.charcoal,
+    secondary = LittleLemonColor.cloud,
+    background = LittleLemonColor.cloud,
+    surfaceVariant = LittleLemonColor.white
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,
